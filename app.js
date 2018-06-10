@@ -1,4 +1,5 @@
-var express       = require("express"),
+var port          = process.env.PORT || 3000,
+    express       = require("express"),
     app           = express(),
     bodyParser    = require("body-parser"),
     User          = require("./models/user"),
@@ -16,10 +17,13 @@ var express       = require("express"),
 var commentRoutes    = require("./routes/comment"),
     campgroundRoutes = require("./routes/campgrounds"),
     indexRoutes      = require("./routes/index")
-  
 
-mongoose.connect(process.env.DATABASEURL);
-// mongoose.connect("mongodb://srvYelpCamp:pwdgoeshere@ds119160.mlab.com:19160/yelpcamp");
+
+
+// Database URL set using enviroment variable
+// *NIX - export DATABASEURL=mongodb://.....
+// Heroku - heroku config:set DATABASEURL=mongodb://....
+mongoose.connect(process.env.dbYelpCamp);
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"))
@@ -57,6 +61,6 @@ app.use(campgroundRoutes);
 app.use(commentRoutes);
 
 
-app.listen(process.env.PORT, process.env.IP, function(){
-    console.log("The YelpCamp Server Has Started!");
+app.listen(port, function(){
+    console.log("The YelpCamp Server Has Started and is listening on port " + port + " !");
 });
